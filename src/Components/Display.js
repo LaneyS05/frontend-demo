@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Update from "./Update";
 
 function Display() {
   const [data, setData] = useState([]);
@@ -20,11 +18,10 @@ function Display() {
   }, []);
 
   const updatePerson = async () => {
-    <Router>
-      <Routes>
-        <Route path="/update/person/:id" element={<Update />} />
-      </Routes>
-    </Router>;
+    const url = `${process.env.REACT_APP_BACKEND_URL}/update/person/${id}`;
+    await fetch(url, {
+      method: "PATCH",
+    });
     nav("/update/person/:id", { replace: true });
   };
 

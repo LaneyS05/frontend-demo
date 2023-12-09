@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 //import { Link } from "react-router-dom";
 
 function Update() {
@@ -10,23 +10,24 @@ function Update() {
     favoriteColor: "",
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const url = `${process.env.REACT_APP_BACKEND_URL}/person/:id`;
-      //console.log(url);
-      const res = await fetch(url);
-      const data = await res.json();
-      if (data.length) {
-        setData(data);
-      }
-    };
-    fetchData();
-  }, []);
-
   const [data, setData] = useState(INIT_STATE);
+  const nav = useNavigate();
+  const { id } = useParams();
+  const [otherData, otherSetData] = useState([]);
+
+  //const [data, setData] = useState(INIT_STATE);
   const [errorMessage, setErrorMessage] = useState([]);
 
-  const nav = useNavigate();
+  useEffect(() => {
+    async function getPerson() {
+      const url = `${process.env.REACT_APP_BACKEND_URL}/person/${id}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      otherSetData(data);
+      //console.log(data);
+    }
+    getPerson();
+  }, []);
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -35,9 +36,9 @@ function Update() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     data.age = Number(data.age);
-    const url = `${process.env.REACT_APP_BACKEND_URL}/person/:id`;
+    const url = `${process.env.REACT_APP_BACKEND_URL}/update`;
     const response = await fetch(url, {
-      method: "POST",
+      method: "PATCH",
       headers: {
         accept: "application/json",
         "content-type": "application/json",
@@ -53,40 +54,36 @@ function Update() {
     }
   };
 
-  //const display = (data) => {
-  //return <Link to={`/person/${data._id}`}>{data.name}</Link>;
-  // };
-
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <input
         onChange={handleChange}
         required
         name="name"
         placeholder="name"
-        value={data.name}
+        value={otherData.name}
       />
       <input
         onChange={handleChange}
         required
         name="age"
         placeholder="age"
-        value={data.age}
+        value={otherData.age}
       />
       <input
         onChange={handleChange}
         required
         name="location"
         placeholder="location"
-        value={data.location}
+        value={otherData.location}
       />
       <input
         onChange={handleChange}
         name="favoriteColor"
         placeholder="favoriteColor"
-        value={data.favoriteColor}
+        value={otherData.favoriteColor}
       />
-      <button onClick={handleSubmit}>Save</button>
+      <input type="submit" />
     </form>
   );
 }
