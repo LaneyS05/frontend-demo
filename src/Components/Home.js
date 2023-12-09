@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function Home() {
   const [data, setData] = useState([]);
-  //
+
   useEffect(() => {
     const fetchData = async () => {
       const url = `${process.env.REACT_APP_BACKEND_URL}/person/all`;
@@ -22,10 +22,7 @@ function Home() {
     data.map((person) => {
       return (
         <li key={person._id}>
-          <Link to={`/person/${person._id}`}>
-            {person.name}
-            <button style={{ margin: 10 }}>Remove</button>
-          </Link>
+          <Link to={`/person/${person._id}`}>{person.name}</Link>
         </li>
       );
     });
