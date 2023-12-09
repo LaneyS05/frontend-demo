@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function Home() {
   const [data, setData] = useState([]);
-
+  //
   useEffect(() => {
     const fetchData = async () => {
       const url = `${process.env.REACT_APP_BACKEND_URL}/person/all`;
