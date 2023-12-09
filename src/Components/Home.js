@@ -7,7 +7,7 @@ function Home() {
   useEffect(() => {
     const fetchData = async () => {
       const url = `${process.env.REACT_APP_BACKEND_URL}/person/all`;
-      console.log(url);
+      //console.log(url);
       const res = await fetch(url);
       const data = await res.json();
       if (data.length) {
@@ -16,12 +16,16 @@ function Home() {
     };
     fetchData();
   }, []);
+
   const display =
     data &&
     data.map((person) => {
       return (
         <li key={person._id}>
-          <Link to={`/person/${person._id}`}>{person.name}</Link>
+          <Link to={`/person/${person._id}`}>
+            {person.name}
+            <button style={{ margin: 10 }}>Remove</button>
+          </Link>
         </li>
       );
     });

@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import Home from "./Components/Home";
 import NewPersonForm from "./Components/NewPersonForm";
+
 function App() {
   return (
     <div>
