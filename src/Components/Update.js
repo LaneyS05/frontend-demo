@@ -13,20 +13,19 @@ function Update() {
   const [data, setData] = useState(INIT_STATE);
   const nav = useNavigate();
   const { id } = useParams();
-  const [otherData, otherSetData] = useState([]);
 
   //const [data, setData] = useState(INIT_STATE);
   const [errorMessage, setErrorMessage] = useState([]);
 
   useEffect(() => {
-    async function getPerson() {
+    async function changePerson() {
       const url = `${process.env.REACT_APP_BACKEND_URL}/person/${id}`;
       const response = await fetch(url);
       const data = await response.json();
-      otherSetData(data);
+      setData(data);
       //console.log(data);
     }
-    getPerson();
+    changePerson();
   }, []);
 
   const handleChange = (e) => {
@@ -36,7 +35,7 @@ function Update() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     data.age = Number(data.age);
-    const url = `${process.env.REACT_APP_BACKEND_URL}/update`;
+    const url = `${process.env.REACT_APP_BACKEND_URL}/person/update/${id}`;
     const response = await fetch(url, {
       method: "PATCH",
       headers: {
@@ -46,11 +45,11 @@ function Update() {
       body: JSON.stringify(data),
     });
 
-    if (response.status !== 201) {
-      setErrorMessage("error creating user");
+    if (response.status !== 200) {
+      setErrorMessage("error updating user");
     } else {
       if (errorMessage) setErrorMessage("");
-      nav("/person/:id", { replace: true });
+      nav(`/person/${id}`, { replace: true });
     }
   };
 
@@ -61,27 +60,27 @@ function Update() {
         required
         name="name"
         placeholder="name"
-        value={otherData.name}
+        value={data.name}
       />
       <input
         onChange={handleChange}
         required
         name="age"
         placeholder="age"
-        value={otherData.age}
+        value={data.age}
       />
       <input
         onChange={handleChange}
         required
         name="location"
         placeholder="location"
-        value={otherData.location}
+        value={data.location}
       />
       <input
         onChange={handleChange}
         name="favoriteColor"
         placeholder="favoriteColor"
-        value={otherData.favoriteColor}
+        value={data.favoriteColor}
       />
       <input type="submit" />
     </form>

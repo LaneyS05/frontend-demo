@@ -22,7 +22,7 @@ function Display() {
     await fetch(url, {
       method: "PATCH",
     });
-    nav("/update/person/:id", { replace: true });
+    nav(`/update/person/${id}`, { replace: true });
   };
 
   const deletePerson = async () => {
